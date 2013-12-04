@@ -59,6 +59,9 @@ static const char *toString(QNetworkAccessManager::Operation op)
     case QNetworkAccessManager::PostOperation:
         str = "POST";
         break;
+    case QNetworkAccessManager::PatchOperation:
+        str = "PATCH";
+        break;
     case QNetworkAccessManager::DeleteOperation:
         str = "DELETE";
         break;

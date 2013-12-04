@@ -908,6 +908,9 @@ void QWebFrame::load(const QNetworkRequest &req,
         case QNetworkAccessManager::PostOperation:
             request.setHTTPMethod("POST");
             break;
+        case QNetworkAccessManager::PatchOperation:
+            request.setHTTPMethod("PATCH");
+            break;
         case QNetworkAccessManager::DeleteOperation:
             request.setHTTPMethod("DELETE");
             break;

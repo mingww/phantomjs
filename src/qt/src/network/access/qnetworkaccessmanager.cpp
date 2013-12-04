@@ -715,6 +715,56 @@ QNetworkReply *QNetworkAccessManager::put(const QNetworkRequest &request, const 
     return reply;
 }
 
+QNetworkReply *QNetworkAccessManager::patch(const QNetworkRequest &request, QHttpMultiPart *multiPart)
+{
+    QNetworkRequest newRequest = d_func()->prepareMultipart(request, multiPart);
+    QIODevice *device = multiPart->d_func()->device;
+    QNetworkReply *reply = patch(newRequest, device);
+    return reply;
+}
+
+/*!
+ Uploads the contents of \a data to the destination \a request and
+ returnes a new QNetworkReply object that will be open for reply.
+
+ \a data must be opened for reading when this function is called
+ and must remain valid until the finished() signal is emitted for
+ this reply.
+
+ Whether anything will be available for reading from the returned
+ object is protocol dependent. For HTTP, the server may send a
+ small HTML page indicating the upload was successful (or not).
+ Other protocols will probably have content in their replies.
+
+ \note For HTTP, this request will send a PUT request, which most servers
+ do not allow. Form upload mechanisms, including that of uploading
+ files through HTML forms, use the POST mechanism.
+
+ \sa get(), post(), deleteResource(), sendCustomRequest()
+ */
+QNetworkReply *QNetworkAccessManager::patch(const QNetworkRequest &request, QIODevice *data)
+{
+    return d_func()->postProcess(createRequest(QNetworkAccessManager::PatchOperation, request, data));
+}
+
+/*!
+ \overload
+
+ Sends the contents of the \a data byte array to the destination
+ specified by \a request.
+ */
+QNetworkReply *QNetworkAccessManager::patch(const QNetworkRequest &request, const QByteArray &data)
+{
+    QBuffer *buffer = new QBuffer;
+    buffer->setData(data);
+    buffer->open(QIODevice::ReadOnly);
+
+    QNetworkReply *reply = patch(request, buffer);
+    buffer->setParent(reply);
+    return reply;
+}
+
+
 /*!
     \since 4.6
 

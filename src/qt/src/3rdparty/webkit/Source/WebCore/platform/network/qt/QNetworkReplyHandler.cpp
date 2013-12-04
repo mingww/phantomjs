@@ -368,6 +368,8 @@ String QNetworkReplyHandler::httpMethod() const
         return "POST";
     case QNetworkAccessManager::PutOperation:
         return "PUT";
+    case QNetworkAccessManager::PatchOperation:
+        return "PATCH";
     case QNetworkAccessManager::DeleteOperation:
         return "DELETE";
     case QNetworkAccessManager::CustomOperation:
@@ -395,6 +397,8 @@ QNetworkReplyHandler::QNetworkReplyHandler(ResourceHandle* handle, LoadType load
         m_method = QNetworkAccessManager::PostOperation;
     else if (r.httpMethod() == "PUT")
         m_method = QNetworkAccessManager::PutOperation;
+    else if (r.httpMethod() == "PATCH")
+        m_method = QNetworkAccessManager::PatchOperation;
     else if (r.httpMethod() == "DELETE")
         m_method = QNetworkAccessManager::DeleteOperation;
     else
@@ -623,7 +627,7 @@ QNetworkReply* QNetworkReplyHandler::sendNetworkRequest(QNetworkAccessManager* m
         && (!url.toLocalFile().isEmpty() || url.scheme() == QLatin1String("data")))
         m_method = QNetworkAccessManager::GetOperation;
 
-    if (m_method != QNetworkAccessManager::PostOperation && m_method != QNetworkAccessManager::PutOperation) {
+    if (m_method != QNetworkAccessManager::PostOperation && m_method != QNetworkAccessManager::PutOperation && m_method != QNetworkAccessManager::PatchRequest) {
         // clearing Contents-length and Contents-type of the requests that do not have contents.
         m_request.setHeader(QNetworkRequest::ContentTypeHeader, QVariant());
         m_request.setHeader(QNetworkRequest::ContentLengthHeader, QVariant());
@@ -639,6 +643,15 @@ QNetworkReply* QNetworkReplyHandler::sendNetworkRequest(QNetworkAccessManager* m
             m_request.setAttribute(QNetworkRequest::DoNotBufferUploadDataAttribute, QVariant(true));
             QNetworkReply* result = manager->post(m_request, postDevice);
             postDevice->setParent(result);
+            return result;
+        }
+        case QNetworkAccessManager::PatchOperation: {
+            FormDataIODevice* patchDevice = new FormDataIODevice(request.httpBody());
+            // We may be uploading files so prevent QNR from buffering data
+            m_request.setHeader(QNetworkRequest::ContentLengthHeader, patchDevice->getFormDataSize());
+            m_request.setAttribute(QNetworkRequest::DoNotBufferUploadDataAttribute, QVariant(true));
+            QNetworkReply* result = manager->patch(m_request, patchDevice);
+            patchDevice->setParent(result);
             return result;
         }
         case QNetworkAccessManager::HeadOperation:

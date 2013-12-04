@@ -171,6 +171,7 @@ QNetworkAccessHttpBackendFactory::create(QNetworkAccessManager::Operation op,
     switch (op) {
     case QNetworkAccessManager::GetOperation:
     case QNetworkAccessManager::PostOperation:
+    case QNetworkAccessManager::PatchOperation:
     case QNetworkAccessManager::HeadOperation:
     case QNetworkAccessManager::PutOperation:
     case QNetworkAccessManager::DeleteOperation:
@@ -450,6 +451,12 @@ void QNetworkAccessHttpBackend::postRequest()
     case QNetworkAccessManager::PostOperation:
         invalidateCache();
         httpRequest.setOperation(QHttpNetworkRequest::Post);
+        createUploadByteDevice();
+        break;
+
+    case QNetworkAccessManager::PatchOperation:
+        invalidateCache();
+        httpRequest.setOperation(QHttpNetworkRequest::Patch);
         createUploadByteDevice();
         break;
 

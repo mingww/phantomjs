@@ -90,6 +90,9 @@ QByteArray QHttpNetworkRequestPrivate::methodName() const
     case QHttpNetworkRequest::Post:
         return "POST";
         break;
+    case QHttpNetworkRequest::Patch:
+        return "PATCH";
+        break;
     case QHttpNetworkRequest::Options:
         return "OPTIONS";
         break;

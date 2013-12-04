@@ -2254,6 +2254,27 @@ int QHttp::post(const QString &path, const QByteArray &data, QIODevice *to)
     return d->addRequest(new QHttpPGHRequest(header, new QByteArray(data), to));
 }
 
+int QHttp::patch(const QString &path, QIODevice *data, QIODevice *to )
+{
+    Q_D(QHttp);
+    QHttpRequestHeader header(QLatin1String("PATCH"), path);
+    header.setValue(QLatin1String("Connection"), QLatin1String("Keep-Alive"));
+    return d->addRequest(new QHttpPGHRequest(header, data, to));
+}
+
+/*!
+    \overload
+
+    \a data is used as the content data of the HTTP request.
+*/
+int QHttp::patch(const QString &path, const QByteArray &data, QIODevice *to)
+{
+    Q_D(QHttp);
+    QHttpRequestHeader header(QLatin1String("PATCH"), path);
+    header.setValue(QLatin1String("Connection"), QLatin1String("Keep-Alive"));
+    return d->addRequest(new QHttpPGHRequest(header, new QByteArray(data), to));
+}
+
 /*!
     Sends a header request for \a path to the server set by setHost()
     or as specified in the constructor.

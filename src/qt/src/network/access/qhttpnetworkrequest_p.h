@@ -69,6 +69,7 @@ public:
         Get,
         Head,
         Post,
+        Patch,
         Put,
         Delete,
         Trace,

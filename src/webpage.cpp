@@ -817,6 +817,8 @@ void WebPage::openUrl(const QString &address, const QVariant &op, const QVariant
         networkOp = QNetworkAccessManager::PutOperation;
     else if (operation == "post")
         networkOp = QNetworkAccessManager::PostOperation;
+    else if (operation == "patch")
+        networkOp = QNetworkAccessManager::PatchOperation;
     else if (operation == "delete")
         networkOp = QNetworkAccessManager::DeleteOperation;
 

@@ -223,6 +223,8 @@ public:
     int get(const QString &path, QIODevice *to=0);
     int post(const QString &path, QIODevice *data, QIODevice *to=0 );
     int post(const QString &path, const QByteArray &data, QIODevice *to=0);
+    int patch(const QString &path, QIODevice *data, QIODevice *to=0 );
+    int patch(const QString &path, const QByteArray &data, QIODevice *to=0);
     int head(const QString &path);
     int request(const QHttpRequestHeader &header, QIODevice *device=0, QIODevice *to=0);
     int request(const QHttpRequestHeader &header, const QByteArray &data, QIODevice *to=0);
