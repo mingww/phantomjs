@@ -38,7 +38,7 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-#include <wayland-client.h>
+// #include <wayland-client.h>
 
 int main(int, char **)
 {
