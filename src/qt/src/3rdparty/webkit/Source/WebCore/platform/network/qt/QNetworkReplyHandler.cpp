@@ -238,8 +238,8 @@ QNetworkReply* QNetworkReplyWrapper::release()
 
     m_reply->disconnect(this);
     QNetworkReply* reply = m_reply;
-    m_reply = 0;
-    m_sniffer = 0;
+    m_reply = nullptr;
+    m_sniffer = nullptr;
 
     return reply;
 }
@@ -302,7 +302,7 @@ void QNetworkReplyWrapper::receiveSniffedMIMEType()
     Q_ASSERT(m_sniffer);
 
     m_sniffedMIMEType = m_sniffer->mimeType();
-    m_sniffer = 0;
+    m_sniffer = nullptr;
 
     emitMetaDataChanged();
 }
@@ -404,7 +404,7 @@ QNetworkReplyHandler::QNetworkReplyHandler(ResourceHandle* handle, LoadType load
     else
         m_method = QNetworkAccessManager::CustomOperation;
 
-    QObject* originatingObject = 0;
+    QObject* originatingObject = nullptr;
     if (m_resourceHandle->getInternal()->m_context)
         originatingObject = m_resourceHandle->getInternal()->m_context->originatingObject();
 
@@ -429,7 +429,7 @@ QNetworkReply* QNetworkReplyHandler::release()
         return 0;
 
     QNetworkReply* reply = m_replyWrapper->release();
-    m_replyWrapper = 0;
+    m_replyWrapper = nullptr;
     return reply;
 }
 
@@ -452,12 +452,12 @@ void QNetworkReplyHandler::finish()
 
     ResourceHandleClient* client = m_resourceHandle->client();
     if (!client) {
-        m_replyWrapper = 0;
+        m_replyWrapper = nullptr;
         return;
     }
 
     if (m_replyWrapper->wasRedirected()) {
-        m_replyWrapper = 0;
+        m_replyWrapper = nullptr;
         m_queue.push(&QNetworkReplyHandler::start);
         return;
     }
@@ -477,7 +477,7 @@ void QNetworkReplyHandler::finish()
         }
     }
 
-    m_replyWrapper = 0;
+    m_replyWrapper = nullptr;
 }
 
 void QNetworkReplyHandler::sendResponseIfNeeded()
@@ -551,7 +551,7 @@ void QNetworkReplyHandler::redirect(ResourceResponse& response, const QUrl& redi
                             newUrl.toString(),
                             QCoreApplication::translate("QWebPage", "Redirection limit reached"));
         client->didFail(m_resourceHandle, error);
-        m_replyWrapper = 0;
+        m_replyWrapper = nullptr;
         return;
     }
 
@@ -574,7 +574,7 @@ void QNetworkReplyHandler::redirect(ResourceResponse& response, const QUrl& redi
     if (wasAborted()) // Network error cancelled the request.
         return;
 
-    QObject* originatingObject = 0;
+    QObject* originatingObject = nullptr;
     if (m_resourceHandle->getInternal()->m_context)
         originatingObject = m_resourceHandle->getInternal()->m_context->originatingObject();
 
