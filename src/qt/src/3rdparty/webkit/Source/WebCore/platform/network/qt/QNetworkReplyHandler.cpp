@@ -627,7 +627,7 @@ QNetworkReply* QNetworkReplyHandler::sendNetworkRequest(QNetworkAccessManager* m
         && (!url.toLocalFile().isEmpty() || url.scheme() == QLatin1String("data")))
         m_method = QNetworkAccessManager::GetOperation;
 
-    if (m_method != QNetworkAccessManager::PostOperation && m_method != QNetworkAccessManager::PutOperation && m_method != QNetworkAccessManager::PatchRequest) {
+    if (m_method != QNetworkAccessManager::PostOperation && m_method != QNetworkAccessManager::PutOperation && m_method != QNetworkAccessManager::PatchOperation) {
         // clearing Contents-length and Contents-type of the requests that do not have contents.
         m_request.setHeader(QNetworkRequest::ContentTypeHeader, QVariant());
         m_request.setHeader(QNetworkRequest::ContentLengthHeader, QVariant());
