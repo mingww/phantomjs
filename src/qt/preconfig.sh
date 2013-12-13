@@ -78,6 +78,10 @@ QT_CFG+=' -D QT_NO_STYLE_CLEANLOOKS'
 QT_CFG+=' -D QT_NO_STYLE_MOTIF'
 QT_CFG+=' -D QT_NO_STYLE_PLASTIQUE'
 
+#macox
+QT_CFG+=' -platform unsupported/macx-clang-libc++'
+QT_CFG+=' -arch x86_64'
+
 until [ -z "$1" ]; do
     case $1 in
         "--qt-config")
