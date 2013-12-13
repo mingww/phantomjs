@@ -9,7 +9,7 @@ QT_CFG+=' -v'                   # Makes it easier to see what header dependencie
 QT_CFG+=' -static'
 
 if [[ $OSTYPE = darwin* ]]; then
-    QT_CFG+=' -arch x86'
+    #QT_CFG+=' -arch x86'
     QT_CFG+=' -cocoa'           # Cocoa only, ignore Carbon
     QT_CFG+=' -no-dwarf2'
 else
