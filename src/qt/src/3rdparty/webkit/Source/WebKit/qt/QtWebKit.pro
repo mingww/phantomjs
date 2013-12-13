@@ -256,7 +256,7 @@ contains(DEFINES, ENABLE_VIDEO=1) {
                        $$SOURCE_DIR/../WebKitLibraries/
 
         DEFINES+=NSGEOMETRY_TYPES_SAME_AS_CGGEOMETRY_TYPES
-        contains(CONFIG, "x86") {
+        contains(CONFIG, "x86")|contains(CONFIG, "ppc") {
             DEFINES+=NS_BUILD_32_LIKE_64
         }
 
@@ -278,6 +278,8 @@ contains(DEFINES, ENABLE_VIDEO=1) {
             LIBS += $$SOURCE_DIR/../WebKitLibraries/libWebKitSystemInterfaceLion.a
         } else: equals(DARWIN_MAJOR_VERSION, "12") | contains(QMAKE_MAC_SDK, "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk") {
             LIBS += $$SOURCE_DIR/../WebKitLibraries/libWebKitSystemInterfaceMountainLion.a
+        } else: equals(DARWIN_MAJOR_VERSION, "13") | contains(QMAKE_MAC_SDK, ".*MacOSX10.9.sdk") {
+            LIBS += $$SOURCE_DIR/../WebKitLibraries/libWebKitSystemInterfaceMavericks.a
         }
     }
 }
@@ -320,7 +322,7 @@ contains(CONFIG, texmap) {
 
 !symbian-abld:!symbian-sbsv2 {
     modfile.files = $$moduleFile
-    modfile.path = $$[QMAKE_MKSPECS]/modules
+    modfile.path = $$[QT_INSTALL_DATA]/mkspecs/modules
 
     INSTALLS += modfile
 } else {
@@ -328,7 +330,7 @@ contains(CONFIG, texmap) {
 
     inst_modfile.commands = $$QMAKE_COPY ${QMAKE_FILE_NAME} ${QMAKE_FILE_OUT}
     inst_modfile.input = moduleFile
-    inst_modfile.output = $$[QMAKE_MKSPECS]/modules
+    inst_modfile.output = $$[QT_INSTALL_DATA]/mkspecs/modules
     inst_modfile.CONFIG = no_clean
 
     QMAKE_EXTRA_COMPILERS += inst_modfile
